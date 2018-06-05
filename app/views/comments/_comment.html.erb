@@ -7,3 +7,12 @@
   <strong>Comment:</strong>
   <%= comment.body %>
 </p>
+
+<% if user_signed_in? %>
+<p>
+  <%= link_to('Delete',
+              [comment.article,comment],
+              method: :delete,
+              data: {confirm: 'Are you sure?'} )%>
+</p>
+<% end %>
