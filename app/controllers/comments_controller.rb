@@ -3,18 +3,22 @@ class CommentsController < ApplicationController
   def create
     @article = Article.find(params[:article_id])
     @comment = @article.comments.new(comment_params)
+    # binding.pry
     if @comment.save
       redirect_to(article_path(@article))
+    elsif comment_params[:commenter] && comment_params[:body] && @comment.save(validate: false)
+      redirect_to(article_path(@article))
     else
-      redirect_to(article_path(@article), :flash => {:alert => "Comment can't be empty"})
+      redirect_to(article_path(@article), :flash => {:comment_errors => @comment.errors.full_messages})
     end
 
   end
 
   def destroy
-    @article = Article.find(params[:article_id])
+    @article = current_user.articles.find(params[:article_id])
+    # @article = Article.find(params[:article_id])
     @comment = @article.comments.find(params[:id])
-    if current_user.id == @article.user_id || current_user.id == @comment.user_id
+    if current_user.id == @comment.user_id
       @comment.destroy
       redirect_to(article_path(@article))
     else
@@ -25,6 +29,10 @@ class CommentsController < ApplicationController
 
   private
     def comment_params
-      params.require(:comment).permit(:commenter,:body).merge!(user_id: current_user&.id)
+      if current_user
+        params.require(:comment).permit(:commenter,:body).merge!(user_id: current_user&.id)
+      else
+        params.require(:comment).permit(:commenter,:body)
+        end
     end
 end

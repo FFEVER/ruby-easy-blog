@@ -1,24 +1,28 @@
-<%= simple_form_for [ @article, @article.comments.build ] do |form|  %>
-  <% if @comment&.errors&.any? %>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(@comment&.errors&.count, "error") %> prohibited
-        this article from being saved:
-      </h2>
+<%= simple_form_for [@article, @article.comments.build] do |form| %>
+  <% if flash[:comment_errors]%>
+    <div class="alert alert-danger" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h3>
+        <%= pluralize(flash[:comment_errors].count, "error") %> prohibited
+        this comment from being created:
+      </h3>
       <ul>
-        <% @comment&.errors&.full_messages.each do |msg| %>
+        <% flash[:comment_errors].each do |msg| %>
           <li><%= msg %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
+
   <p>
     <%= form.input :commenter, label: 'Commenter', input_html: {value: current_user&.email} %>
   </p>
   <p>
-    <%= form.input :body, as: :text, label: 'Body' %>
+    <%= form.input :body, as: :text, label: 'Body', input_html: {maxlength: 500, rows: 5} %>
   </p>
   <p>
-    <%= form.submit  %>
+    <%= form.submit %>
   </p>
 <% end %>

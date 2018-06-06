@@ -1,18 +1,18 @@
-<p>
-  <strong>Commenter:</strong>
-  <%= comment.commenter %>
-</p>
+<div class="media comment">
 
-<p>
-  <strong>Comment:</strong>
-  <%= comment.body %>
-</p>
-
-<% if user_signed_in? %>
-<p>
-  <%= link_to('Delete',
-              [comment.article,comment],
-              method: :delete,
-              data: {confirm: 'Are you sure?'} )%>
-</p>
-<% end %>
+  <div class="media-body">
+    <h5 class="mt-0"><%= comment.commenter %> <small><i><%= comment.created_at.strftime("%d/%m/%y") %></i></small></h5>
+    <%= simple_format comment.body %>
+  </div>
+  <div class="media-right media-top">
+    <% if user_signed_in? and (current_user.id == @article.user_id or current_user.id == comment.user_id) %>
+      <p>
+        <%= link_to([comment.article, comment],
+                    method: :delete,
+                    data: {confirm: 'Are you sure?'}) do%>
+          <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+      </p>
+    <% end %>
+  </div>
+</div>

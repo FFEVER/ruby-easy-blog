@@ -12,6 +12,7 @@ class ArticlesController < ApplicationController
   def show
     @article = Article.find(params[:id])
     @writer = User.find(@article.user_id)
+    # binding.pry
   end
 
   def new
@@ -37,8 +38,7 @@ class ArticlesController < ApplicationController
       # redirect_to(@article) is equal to redirect_to(article_path(@article))
       redirect_to(@article, notice: 'Article created')
     else
-      # redirect to previous page
-      render('new')
+      redirect_to(new_article_path, flash: { new_article_errors: @article.errors.full_messages })
     end
   end
 
@@ -52,10 +52,16 @@ class ArticlesController < ApplicationController
   end
 
   def destroy
-    @article = Article.find(params[:id])
+    binding.pry
+    @article = current_user.articles.find(params[:id])
+      # redirect_to(articles_path, flash: { delete_article_errors: @article.errors.full_messages })
     @article.destroy
-
     redirect_to(articles_path)
+    else
+  end
+
+  def render_404
+    render json: {meta: meta_response(404, "Record not found")}
   end
 
   private

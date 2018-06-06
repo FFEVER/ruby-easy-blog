@@ -32,7 +32,7 @@
   <header class="navbar  navbar-inverse">
     <div class="container-fluid">
       <div class="navbar-header">
-        <%= link_to (welcome_index_path), class: 'navbar-brand' do %>
+        <%= link_to (root_path), class: 'navbar-brand' do %>
           EASY_BLOG!
         <% end %>
       </div>
@@ -56,6 +56,7 @@
           <li>
             <%= link_to(edit_user_registration_path) do%>
               <span class="glyphicon glyphicon-user"></span>
+
               My Profile
             <% end %>
           </li>

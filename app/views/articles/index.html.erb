@@ -2,33 +2,29 @@
   <div class="row">
     <h1>Listing All Articles</h1>
   </div>
-  <div class="row">
-    <table class="table table-dark">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">Date created</th>
-          <th scope="col">Title</th>
-          <th scope="col">text</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @articles.each do |article|  %>
-          <tr>
-            <th scope="row"><%= article.created_at%></th>
-            <td><%= article.title %></td>
-            <td><%= sanitize article.text %></td>
-            <td><%= link_to('Show',article_path(article)) %></td>
-            <td><%= link_to('Edit', edit_article_path(article)) %></td>
-            <td><%= link_to('Delete', article_path(article), method: :delete, data: {confirm: 'Are you sure?'})  %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+
+  <% @articles.reverse_each do |article| %>
+    <div class="row">
+      <div class="article-show">
+        <div class="media">
+          <div class="media-body">
+            <%= link_to(article_path(article)) do %>
+              <h5 class="mt-0"><%= article.title %></h5>
+            <% end %>
+            <%= article.text.html_safe %>
+          </div>
+        </div>
+        <hr/>
+        <div class="article-details">
+          <p><strong>Author: </strong><%= User.find(article.user_id).email %></p>
+          <i><small><%= article.created_at.strftime("%d/%m/%y") %></small></i>
+        </div>
+      </div>
     </div>
-  </div>
+  <% end %>
+
+
+</div>
 </div>
 
 

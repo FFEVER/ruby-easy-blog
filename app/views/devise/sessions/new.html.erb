@@ -1,26 +1,35 @@
 <h2>Log in</h2>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <%= f.input :email,as: :email, input_html: {autofocus: true, autocomplete: "email"} %>
   </div>
 
   <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
+    <% if @minimum_password_length %>
+      <% @minimum_password_length_string = "#{@minimum_password_length} characters minimum" %>
+    <% else %>
+      <% @minimum_password_length_string = "" %>
+    <% end %>
+    <%= f.input :password,
+                label: "Password",
+                hint: "#{@minimum_password_length_string}",
+                as: :password,
+                input_html: {autocomplete: "off"} %>
   </div>
 
   <% if devise_mapping.rememberable? -%>
     <div class="field">
-      <%= f.check_box :remember_me %>
+      <%= f.input_field :remember_me, as: :boolean, boolean_style: :inline %>
       <%= f.label :remember_me %>
     </div>
   <% end -%>
 
   <div class="actions">
-    <%= f.submit "Log in" %>
+    <%= f.submit "Log in", class: "btn btn-info" %>
   </div>
 <% end %>
+
+<hr />
 
 <%= render "devise/shared/links" %>
