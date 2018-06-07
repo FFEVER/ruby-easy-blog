@@ -12,7 +12,6 @@ class ArticlesController < ApplicationController
   def show
     @article = Article.find(params[:id])
     @writer = User.find(@article.user_id)
-    # binding.pry
   end
 
   def new
@@ -60,9 +59,6 @@ class ArticlesController < ApplicationController
     else
   end
 
-  def render_404
-    render json: {meta: meta_response(404, "Record not found")}
-  end
 
   private
     def article_params
