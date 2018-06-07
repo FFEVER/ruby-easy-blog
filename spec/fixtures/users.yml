@@ -1,2 +1,5 @@
 user_1:
-  email: "test@test.com"
+  email: "test1@test.com"
+
+user_2:
+  email: "tes2t@test.com"

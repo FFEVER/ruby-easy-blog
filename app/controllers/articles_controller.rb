@@ -5,10 +5,6 @@ class ArticlesController < ApplicationController
     @articles = Article.all
   end
 
-  def my_articles
-    @my_articles = current_user.articles.all
-  end
-
   def show
     @article = Article.find(params[:id])
     @writer = User.find(@article.user_id)
@@ -35,7 +31,7 @@ class ArticlesController < ApplicationController
     if @article.save
       # redirect to show action
       # redirect_to(@article) is equal to redirect_to(article_path(@article))
-      redirect_to(@article, notice: 'Article created')
+      redirect_to(@article, notice: 'Article created.')
     else
       redirect_to(new_article_path, flash: { new_article_errors: @article.errors.full_messages })
     end
@@ -44,19 +40,22 @@ class ArticlesController < ApplicationController
   def update
     @article = Article.find(params[:id])
     if @article.update(article_params)
-      redirect_to(@article)
+      redirect_to(@article, notice: 'Article edited.')
     else
       render('edit')
     end
   end
 
   def destroy
-    binding.pry
     @article = current_user.articles.find(params[:id])
       # redirect_to(articles_path, flash: { delete_article_errors: @article.errors.full_messages })
     @article.destroy
-    redirect_to(articles_path)
+    redirect_to(articles_path, notice: 'Article deleted.')
     else
+  end
+
+  def my_articles
+    @my_articles = current_user.articles.all
   end
 
 

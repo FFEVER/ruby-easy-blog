@@ -27,3 +27,5 @@
 
 \.idea/
 coverage
+
+\.vscode/

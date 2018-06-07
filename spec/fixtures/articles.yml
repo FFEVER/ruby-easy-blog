@@ -1,4 +1,10 @@
 article_1:
-  title: "Test"
-  text: "MyText"
+  title: "Test1"
+  text: "MyText1"
   user: user_1
+
+
+article_2:
+  title: "Test2"
+  text: "MyText2"
+  user: user_2
