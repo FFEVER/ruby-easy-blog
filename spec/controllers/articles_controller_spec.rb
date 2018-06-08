@@ -6,8 +6,8 @@ RSpec.describe ArticlesController, type: :controller do
 
   let(:article) { articles(:article_1) }
   let(:article2) { articles(:article_2) }
-  let(:user1) { users(:user_1) }
-  let(:user2) { users(:user_2) }
+  let(:user_1) { users(:user_1) }
+  let(:user_2) { users(:user_2) }
 
   context 'Article controller request spec(non-user)' do
     render_views
@@ -19,16 +19,19 @@ RSpec.describe ArticlesController, type: :controller do
 
     it 'POST #create' do
       post :create, params: { article: { title: 'abcdefg', text: 'abcskdjfksflsdkf' }}
+      expect(flash[:alert]).to eq('You need to sign in or sign up before continuing.')
       expect(response).to redirect_to(new_user_session_path)
     end
 
     it 'GET #new' do
       get :new
+      expect(flash[:alert]).to eq('You need to sign in or sign up before continuing.')
       expect(response).to redirect_to(new_user_session_path)
     end
 
     it 'GET #edit' do
       get :edit, params: { id: article.id }
+      expect(flash[:alert]).to eq('You need to sign in or sign up before continuing.')
       expect(response).to redirect_to(new_user_session_path)
     end
 
@@ -40,23 +43,26 @@ RSpec.describe ArticlesController, type: :controller do
 
     it 'PUT #update' do
       put :update, params: { id: article.id, article: { title: 'edited_title', text: 'edited_text' }}
+      expect(flash[:alert]).to eq('You need to sign in or sign up before continuing.')
       expect(response).to redirect_to(new_user_session_path)
     end
 
     it 'DELETE #destroy' do
       delete :destroy, params: { id: article.id }
+      expect(flash[:alert]).to eq('You need to sign in or sign up before continuing.')
       expect(response).to redirect_to(new_user_session_path)
     end
 
     it 'get #my_articles' do
       get :my_articles
+      expect(flash[:alert]).to eq('You need to sign in or sign up before continuing.')
       expect(response).to redirect_to(new_user_session_path)
     end
   end
 
   context 'Articles controller request specs(with user)' do
     # login_user
-    before { sign_in(user1) }
+    before { sign_in(user_1) }
     render_views
 
     # it "should have a current_user" do
@@ -88,8 +94,6 @@ RSpec.describe ArticlesController, type: :controller do
       end
     end
 
-
-
     it 'GET #new' do
       get :new
       expect(response).to have_http_status(200)
@@ -112,9 +116,7 @@ RSpec.describe ArticlesController, type: :controller do
         expect(flash[:alert]).to eq("Only author can edit this article.")
         expect(response).to redirect_to(article_path(assigns(:article)))
       end
-
     end
-
 
     it 'GET #show' do
       get :show, params: { id: article.id }
@@ -128,7 +130,7 @@ RSpec.describe ArticlesController, type: :controller do
         expect(assigns(:article).id).to eq(article.id)
         expect(assigns(:article).title).to eq('edited_title')
         expect(assigns(:article).text).to eq('edited_text')
-        expect(flash[:notice]).to eq("Article edited.")
+        expect(flash[:notice]).to eq('Article edited.')
         expect(response).to redirect_to(article_path(assigns(:article)))
       end
       it 'case false' do

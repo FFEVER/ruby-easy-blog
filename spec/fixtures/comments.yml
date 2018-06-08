@@ -2,3 +2,10 @@ comment_1:
   commenter: "commenter1"
   body: "It's goood."
   article: article_1
+  user: user_1
+
+comment_2:
+  commenter: "commenter2"
+  body: "It's baadd."
+  article: article_1
+  user: user_3
